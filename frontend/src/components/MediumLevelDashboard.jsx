@@ -1,8 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
+import axios from "axios";
 
 const MediumLevelDashboard = () => {
-  const { user, logout } = useContext(AppContext);
+  const { user, logout, backendUrl } = useContext(AppContext);
+  const [complaints, setComplaints] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Determine the type of complaints this user handles
   const getComplaintType = () => {
@@ -10,6 +13,58 @@ const MediumLevelDashboard = () => {
     if (user?.role === "warden") return "Hostel";
     if (user?.role === "registrar") return "Staff (Teacher/Worker)";
     return "N/A";
+  };
+
+  // Fetch assigned complaints
+  const fetchComplaints = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/complaints/assigned`);
+      if (response.data.success) {
+        setComplaints(response.data.complaints);
+      }
+    } catch (error) {
+      console.error("Error fetching complaints:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchComplaints();
+    }
+  }, [user]);
+
+  // Escalate complaint to Director
+  const handleEscalate = async (complaintId) => {
+    if (!confirm("Are you sure you want to escalate this complaint to the Director?")) {
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `${backendUrl}/api/complaints/${complaintId}/escalate`
+      );
+
+      if (response.data.success) {
+        alert("Complaint escalated to Director successfully!");
+        fetchComplaints(); // Refresh the list
+      } else {
+        alert(response.data.message || "Failed to escalate complaint");
+      }
+    } catch (error) {
+      console.error("Error escalating complaint:", error);
+      alert("Error escalating complaint. Please try again.");
+    }
+  };
+
+  // Calculate stats
+  const stats = {
+    total: complaints.length,
+    pending: complaints.filter(c => c.status === "Pending").length,
+    inProgress: complaints.filter(c => c.status === "In Progress").length,
+    escalated: complaints.filter(c => c.status === "Escalated").length,
+    resolved: complaints.filter(c => c.status === "Resolved").length,
   };
 
   return (
@@ -45,7 +100,7 @@ const MediumLevelDashboard = () => {
             <div className="text-5xl">📨</div>
             <div>
               <h3 className="text-sm text-gray-600 font-semibold mb-2">Assigned to Me</h3>
-              <p className="text-3xl font-bold text-gray-800">0</p>
+              <p className="text-3xl font-bold text-gray-800">{stats.total}</p>
             </div>
           </div>
 
@@ -53,7 +108,7 @@ const MediumLevelDashboard = () => {
             <div className="text-5xl">⏳</div>
             <div>
               <h3 className="text-sm text-gray-600 font-semibold mb-2">In Progress</h3>
-              <p className="text-3xl font-bold text-gray-800">0</p>
+              <p className="text-3xl font-bold text-gray-800">{stats.inProgress}</p>
             </div>
           </div>
 
@@ -61,7 +116,7 @@ const MediumLevelDashboard = () => {
             <div className="text-5xl">🔼</div>
             <div>
               <h3 className="text-sm text-gray-600 font-semibold mb-2">Escalated</h3>
-              <p className="text-3xl font-bold text-gray-800">0</p>
+              <p className="text-3xl font-bold text-gray-800">{stats.escalated}</p>
             </div>
           </div>
 
@@ -69,7 +124,7 @@ const MediumLevelDashboard = () => {
             <div className="text-5xl">✅</div>
             <div>
               <h3 className="text-sm text-gray-600 font-semibold mb-2">Resolved</h3>
-              <p className="text-3xl font-bold text-gray-800">0</p>
+              <p className="text-3xl font-bold text-gray-800">{stats.resolved}</p>
             </div>
           </div>
         </div>
@@ -86,12 +141,74 @@ const MediumLevelDashboard = () => {
 
         <div className="bg-white p-8 rounded-xl shadow-md">
           <h2 className="text-2xl text-gray-800 mb-6">Complaints Assigned to You</h2>
-          <div className="text-center py-16 text-gray-400">
-            <p className="text-lg mb-2">📭 No complaints assigned yet</p>
-            <p className="text-sm text-gray-300">
-              {getComplaintType()} complaints will appear here when submitted
-            </p>
-          </div>
+          
+          {loading ? (
+            <div className="text-center py-16 text-gray-400">
+              <p className="text-lg">Loading complaints...</p>
+            </div>
+          ) : complaints.length === 0 ? (
+            <div className="text-center py-16 text-gray-400">
+              <p className="text-lg mb-2">📭 No complaints assigned yet</p>
+              <p className="text-sm text-gray-300">
+                {getComplaintType()} complaints will appear here when submitted
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {complaints.map((complaint) => (
+                <div
+                  key={complaint._id}
+                  className="border-2 border-gray-200 rounded-lg p-5 hover:shadow-md transition-all"
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-gray-800 mb-1">{complaint.title}</h3>
+                      <p className="text-sm text-gray-600">
+                        From: <strong>{complaint.createdBy?.name}</strong> ({complaint.createdBy?.role})
+                        {complaint.createdBy?.department && ` - ${complaint.createdBy.department}`}
+                      </p>
+                    </div>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      complaint.status === "Pending" ? "bg-orange-100 text-orange-700" :
+                      complaint.status === "In Progress" ? "bg-blue-100 text-blue-700" :
+                      complaint.status === "Escalated" ? "bg-red-100 text-red-700" :
+                      "bg-green-100 text-green-700"
+                    }`}>
+                      {complaint.status}
+                    </span>
+                  </div>
+                  
+                  <p className="text-gray-700 mb-3">{complaint.description}</p>
+                  
+                  <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                    <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded">
+                      {complaint.type === "academic" ? "🏫 Academic" : 
+                       complaint.type === "hostel" ? "🏠 Hostel" : 
+                       "🧰 Staff"}
+                    </span>
+                    <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
+                  </div>
+
+                  {complaint.status !== "Escalated" && complaint.status !== "Resolved" && (
+                    <div className="flex gap-2 mt-3 pt-3 border-t border-gray-200">
+                      <button
+                        onClick={() => handleEscalate(complaint._id)}
+                        className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition-all"
+                      >
+                        🔼 Escalate to Director
+                      </button>
+                    </div>
+                  )}
+
+                  {complaint.status === "Escalated" && (
+                    <div className="mt-3 p-2 bg-red-50 rounded text-xs text-red-700">
+                      ✅ This complaint has been escalated to the Director
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

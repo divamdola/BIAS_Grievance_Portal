@@ -60,7 +60,7 @@ MONGO_URI=your_mongodb_connection_string
 ```
 
 4. Seed admin users to database:
-```bash
+```basht
 node seedData.js
 ```
 

@@ -1,14 +1,44 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import ComplaintForm from "./ComplaintForm";
+import axios from "axios";
 
 const LowLevelDashboard = () => {
-  const { user, logout } = useContext(AppContext);
+  const { user, logout, backendUrl } = useContext(AppContext);
   const [showComplaintForm, setShowComplaintForm] = useState(false);
   const [complaints, setComplaints] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleComplaintSubmit = (newComplaint) => {
     setComplaints([newComplaint, ...complaints]);
+  };
+
+  // Fetch user's complaints
+  const fetchMyComplaints = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/complaints/my-complaints`);
+      if (response.data.success) {
+        setComplaints(response.data.complaints);
+      }
+    } catch (error) {
+      console.error("Error fetching complaints:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchMyComplaints();
+    }
+  }, [user]);
+
+  // Calculate stats
+  const stats = {
+    total: complaints.length,
+    pending: complaints.filter(c => c.status === "Pending").length,
+    inProgress: complaints.filter(c => c.status === "In Progress").length,
+    resolved: complaints.filter(c => c.status === "Resolved").length,
   };
 
   return (
@@ -44,7 +74,7 @@ const LowLevelDashboard = () => {
             <div className="text-5xl">📝</div>
             <div>
               <h3 className="text-sm text-gray-600 font-semibold mb-2">My Complaints</h3>
-              <p className="text-3xl font-bold text-gray-800">0</p>
+              <p className="text-3xl font-bold text-gray-800">{stats.total}</p>
             </div>
           </div>
 
@@ -52,7 +82,7 @@ const LowLevelDashboard = () => {
             <div className="text-5xl">⏳</div>
             <div>
               <h3 className="text-sm text-gray-600 font-semibold mb-2">Pending</h3>
-              <p className="text-3xl font-bold text-gray-800">0</p>
+              <p className="text-3xl font-bold text-gray-800">{stats.pending}</p>
             </div>
           </div>
 
@@ -60,7 +90,7 @@ const LowLevelDashboard = () => {
             <div className="text-5xl">⚙️</div>
             <div>
               <h3 className="text-sm text-gray-600 font-semibold mb-2">In Progress</h3>
-              <p className="text-3xl font-bold text-gray-800">0</p>
+              <p className="text-3xl font-bold text-gray-800">{stats.inProgress}</p>
             </div>
           </div>
 
@@ -68,7 +98,7 @@ const LowLevelDashboard = () => {
             <div className="text-5xl">✅</div>
             <div>
               <h3 className="text-sm text-gray-600 font-semibold mb-2">Resolved</h3>
-              <p className="text-3xl font-bold text-gray-800">0</p>
+              <p className="text-3xl font-bold text-gray-800">{stats.resolved}</p>
             </div>
           </div>
         </div>
@@ -105,12 +135,65 @@ const LowLevelDashboard = () => {
 
         <div className="bg-white p-8 rounded-xl shadow-md">
           <h2 className="text-2xl text-gray-800 mb-6">My Complaints</h2>
-          <div className="text-center py-16 text-gray-400">
-            <p className="text-lg mb-2">📭 You haven't submitted any complaints yet</p>
-            <p className="text-sm text-gray-300">
-              Click the button above to submit your first complaint
-            </p>
-          </div>
+          
+          {loading ? (
+            <div className="text-center py-16 text-gray-400">
+              <p className="text-lg">Loading your complaints...</p>
+            </div>
+          ) : complaints.length === 0 ? (
+            <div className="text-center py-16 text-gray-400">
+              <p className="text-lg mb-2">📭 You haven't submitted any complaints yet</p>
+              <p className="text-sm text-gray-300">
+                Click the button above to submit your first complaint
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {complaints.map((complaint) => (
+                <div
+                  key={complaint._id}
+                  className="border-2 border-gray-200 rounded-lg p-5 hover:shadow-md transition-all"
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <h3 className="text-lg font-bold text-gray-800 flex-1">{complaint.title}</h3>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ml-3 ${
+                      complaint.status === "Pending" ? "bg-orange-100 text-orange-700" :
+                      complaint.status === "In Progress" ? "bg-blue-100 text-blue-700" :
+                      complaint.status === "Escalated" ? "bg-red-100 text-red-700" :
+                      "bg-green-100 text-green-700"
+                    }`}>
+                      {complaint.status}
+                    </span>
+                  </div>
+                  
+                  <p className="text-gray-700 mb-3">{complaint.description}</p>
+                  
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <div className="flex gap-3">
+                      <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded">
+                        {complaint.type === "academic" ? "🏫 Academic" : 
+                         complaint.type === "hostel" ? "🏠 Hostel" : 
+                         "🧰 Staff"}
+                      </span>
+                      {complaint.assignedTo && (
+                        <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded">
+                          Assigned to: {complaint.assignedTo.role.toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                    <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
+                  </div>
+                  
+                  {complaint.response && (
+                    <div className="mt-3 p-3 bg-green-50 rounded border-l-4 border-green-500">
+                      <p className="text-xs font-semibold text-green-800 mb-1">Response:</p>
+                      <p className="text-sm text-green-700">{complaint.response}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

@@ -1,5 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AppContext } from "../context/AppContext";
+import assets from "../assets/assets";
+
 
 const Login = ({ setShowSignup }) => {
   const { login } = useContext(AppContext);
@@ -7,6 +9,9 @@ const Login = ({ setShowSignup }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+const logo = assets.logo;
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

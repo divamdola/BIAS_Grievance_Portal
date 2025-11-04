@@ -234,7 +234,7 @@ const Signup = ({ setShowSignup }) => {
 
               <button
                 type="submit"
-                className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-base font-semibold cursor-pointer transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-[#021189] text-white rounded-lg text-base font-semibold cursor-pointer transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
                 disabled={loading}
               >
                 {loading ? (

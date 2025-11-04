@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import ComplaintForm from "./ComplaintForm";
 import axios from "axios";
+import assets from "../assets/assets";
 
 const LowLevelDashboard = () => {
   const { user, logout, backendUrl } = useContext(AppContext);
@@ -44,12 +45,13 @@ const LowLevelDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Navbar */}
+
       <nav className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-8xl mx-auto px-6 lg:px-20 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white text-xl font-bold">B</span>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center">
+                <img src={assets.logo} alt="BIAS Logo" className="w-full h-full object-contain" />
               </div>
               <div>
                 <h2 className="text-xl font-bold text-gray-800">BIAS Grievance Portal</h2>
@@ -63,7 +65,7 @@ const LowLevelDashboard = () => {
               </div>
               <button
                 onClick={logout}
-                className="px-5 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium transition-all hover:shadow-lg hover:scale-105"
+                className="px-5 py-2 bg-[#021189] text-white rounded-lg font-medium transition-all hover:shadow-lg hover:scale-105"
               >
                 Logout
               </button>
@@ -72,9 +74,9 @@ const LowLevelDashboard = () => {
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-8xl mx-auto px-6 lg:px-20 py-8">
         {/* Welcome Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 mb-8 text-white shadow-lg">
+        <div className="bg-[#021189] rounded-2xl p-8 mb-8 text-white shadow-lg">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.name}! 👋</h1>

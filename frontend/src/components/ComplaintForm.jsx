@@ -57,7 +57,7 @@ const ComplaintForm = ({ onClose, onSubmitSuccess }) => {
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-5">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-gradient-to-r from-purple-600 to-purple-800 text-white p-6 rounded-t-xl">
+        <div className="sticky top-0 bg-[#021189] text-white p-6 rounded-t-xl">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">📝 Submit New Complaint</h2>
             <button
@@ -135,7 +135,7 @@ const ComplaintForm = ({ onClose, onSubmitSuccess }) => {
           <div className="flex gap-3 pt-4">
             <button
               type="submit"
-              className="flex-1 p-3.5 bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-lg text-base font-semibold cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-purple-400/40 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="flex-1 p-3.5 bg-[#021189] text-white rounded-lg text-base font-semibold cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-purple-400/40 disabled:opacity-60 disabled:cursor-not-allowed"
               disabled={loading}
             >
               {loading ? "Submitting..." : "Submit Complaint"}

@@ -47,25 +47,25 @@ const LowLevelDashboard = () => {
       {/* Header Navbar */}
 
       <nav className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-8xl mx-auto px-6 lg:px-20 py-4">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-20 py-3 sm:py-4">
           <div className="flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0">
                 <img src={assets.logo} alt="BIAS Logo" className="w-full h-full object-contain" />
               </div>
-              <div>
-                <h2 className="text-xl font-bold text-gray-800">BIAS Grievance Portal</h2>
-                <p className="text-xs text-gray-500">Birla Institute of Applied Sciences</p>
+              <div className="min-w-0">
+                <h2 className="text-sm sm:text-lg lg:text-xl font-bold text-gray-800 truncate">BIAS Grievance Portal</h2>
+                <p className="text-xs lg:text-sm text-gray-500 hidden sm:block">Birla Institute of Applied Sciences</p>
               </div>
             </div>
-            <div className="flex items-center gap-6">
-              <div className="text-right">
+            <div className="flex items-center gap-2 sm:gap-4 lg:gap-6">
+              <div className="text-right hidden md:block">
                 <p className="text-sm font-semibold text-gray-800">{user?.name}</p>
                 <p className="text-xs text-gray-500">{user?.role.toUpperCase()} {user?.department && `• ${user?.department}`}</p>
               </div>
               <button
                 onClick={logout}
-                className="px-5 py-2 bg-[#021189] text-white rounded-lg font-medium transition-all hover:shadow-lg hover:scale-105"
+                className="px-3 py-1.5 sm:px-5 sm:py-2 bg-[#021189] text-white rounded-lg text-sm sm:text-base font-medium transition-all hover:shadow-lg hover:scale-105"
               >
                 Logout
               </button>
@@ -97,8 +97,9 @@ const LowLevelDashboard = () => {
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all">
             <div className="flex items-center justify-between mb-4">
+
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <span className="text-2xl">📝</span>
               </div>
@@ -106,11 +107,11 @@ const LowLevelDashboard = () => {
                 <p className="text-3xl font-bold text-gray-800">{stats.total}</p>
               </div>
             </div>
-            <h3 className="text-sm font-medium text-gray-600">Total Complaints</h3>
-            <p className="text-xs text-gray-400 mt-1">All submissions</p>
+            <h3 className="text-xl lg:text-2xl font-medium text-black">Total Complaints</h3>
+            <p className="text-xs lg:text-lg text-gray-600 mt-1">All submissions</p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
                 <span className="text-2xl">⏳</span>
@@ -119,11 +120,11 @@ const LowLevelDashboard = () => {
                 <p className="text-3xl font-bold text-orange-600">{stats.pending}</p>
               </div>
             </div>
-            <h3 className="text-sm font-medium text-gray-600">Pending Review</h3>
-            <p className="text-xs text-gray-400 mt-1">Awaiting response</p>
+            <h3 className="text-xl lg:text-2xl font-medium text-black">Pending Review</h3>
+            <p className="text-xs lg:text-lg text-gray-600 mt-1">Awaiting response</p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <span className="text-2xl">⚙️</span>
@@ -132,11 +133,11 @@ const LowLevelDashboard = () => {
                 <p className="text-3xl font-bold text-blue-600">{stats.inProgress}</p>
               </div>
             </div>
-            <h3 className="text-sm font-medium text-gray-600">In Progress</h3>
-            <p className="text-xs text-gray-400 mt-1">Being addressed</p>
+            <h3 className="text-xl lg:text-2xl font-medium text-black">In Progress</h3>
+            <p className="text-xs lg:text-lg text-gray-600 mt-1">Being addressed</p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                 <span className="text-2xl">✅</span>
@@ -145,8 +146,8 @@ const LowLevelDashboard = () => {
                 <p className="text-3xl font-bold text-green-600">{stats.resolved}</p>
               </div>
             </div>
-            <h3 className="text-sm font-medium text-gray-600">Resolved</h3>
-            <p className="text-xs text-gray-400 mt-1">Successfully closed</p>
+            <h3 className="text-xl lg:text-2xl font-medium text-black">Resolved</h3>
+            <p className="text-xs lg:text-lg text-gray-600 mt-1">Successfully closed</p>
           </div>
         </div>
 
@@ -154,7 +155,7 @@ const LowLevelDashboard = () => {
         <div className="text-center mb-8">
           <button 
             onClick={() => setShowComplaintForm(true)}
-            className="px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-lg font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-105 inline-flex items-center gap-3"
+            className="px-10 py-4 bg-[#021189] text-white rounded-lg text-lg font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-105 inline-flex items-center gap-3"
           >
             <svg className="w-5 h-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
               <path d="M12 4v16m8-8H4"></path>
@@ -165,15 +166,15 @@ const LowLevelDashboard = () => {
 
         {/* Information Cards */}
         <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Complaint Categories</h2>
+          <h2 className="text-xl lg:text-4xl font-bold text-gray-800 mb-2">Complaint Categories</h2>
           <p className="text-gray-600 mb-6">Choose the appropriate category when submitting your complaint</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
               <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">🏫</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-800 mb-2">Academic Issues</h3>
-              <p className="text-sm text-gray-600 mb-4">Course-related, exam issues, faculty concerns</p>
+              <h3 className="text-lg lg:text-2xl font-bold text-gray-800 mb-2">Academic Issues</h3>
+              <p className="text-sm lg:text-lg text-gray-600 mb-4">Course-related, exam issues, faculty concerns</p>
               <div className="flex items-center gap-2 text-xs text-blue-700">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd"></path>
@@ -185,8 +186,8 @@ const LowLevelDashboard = () => {
               <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">🏠</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-800 mb-2">Hostel Issues</h3>
-              <p className="text-sm text-gray-600 mb-4">Accommodation, facilities, mess complaints</p>
+              <h3 className="text-lg lg:text-2xl font-bold text-gray-800 mb-2">Hostel Issues</h3>
+              <p className="text-sm lg:text-lg text-gray-600 mb-4">Accommodation, facilities, mess complaints</p>
               <div className="flex items-center gap-2 text-xs text-purple-700">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd"></path>
@@ -198,8 +199,8 @@ const LowLevelDashboard = () => {
               <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">🧰</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-800 mb-2">Staff Issues</h3>
-              <p className="text-sm text-gray-600 mb-4">Teacher/Worker related concerns</p>
+              <h3 className="text-lg lg:text-2xl font-bold text-gray-800 mb-2">Staff Issues</h3>
+              <p className="text-sm  lg:text-lg text-gray-600 mb-4">Teacher/Worker related concerns</p>
               <div className="flex items-center gap-2 text-xs text-indigo-700">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd"></path>
@@ -214,8 +215,8 @@ const LowLevelDashboard = () => {
         <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-800">My Complaints</h2>
-              <p className="text-sm text-gray-500 mt-1">Track and manage all your submissions</p>
+              <h2 className="text-2xl lg:text-4xl font-bold text-gray-800">My Complaints</h2>
+              <p className="text-sm lg:text-lg text-gray-500 mt-1">Track and manage all your submissions</p>
             </div>
             <div className="text-sm text-gray-500">
               {complaints.length} {complaints.length === 1 ? 'complaint' : 'complaints'}
@@ -246,7 +247,7 @@ const LowLevelDashboard = () => {
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-gray-800 mb-1">{complaint.title}</h3>
+                      <h3 className="text-lg lg:text-2xl font-bold text-gray-800 mb-1">{complaint.title}</h3>
                       <div className="flex items-center gap-2 text-xs text-gray-500">
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"></path>
@@ -264,7 +265,7 @@ const LowLevelDashboard = () => {
                     </span>
                   </div>
                   
-                  <p className="text-gray-700 mb-4 leading-relaxed">{complaint.description}</p>
+                  <p className="text-gray-700 lg:text-lg mb-4 leading-relaxed">{complaint.description}</p>
                   
                   <div className="flex items-center gap-3 pt-3 border-t border-gray-200">
                     <span className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${

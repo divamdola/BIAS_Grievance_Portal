@@ -42,108 +42,196 @@ const LowLevelDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-gradient-to-r from-purple-600 to-purple-800 text-white px-8 py-4 flex justify-between items-center shadow-lg">
-        <div>
-          <h2 className="text-2xl font-bold">🎓 Grievance System</h2>
-        </div>
-        <div className="flex items-center gap-5">
-          <span className="text-sm">
-            <strong>{user?.name}</strong> ({user?.role.toUpperCase()})
-            {user?.department && ` - ${user?.department}`}
-          </span>
-          <button
-            onClick={logout}
-            className="px-5 py-2 bg-white/20 text-white border-2 border-white rounded-md font-semibold transition-all hover:bg-white hover:text-purple-600"
-          >
-            Logout
-          </button>
+    <div className="min-h-screen bg-gray-100">
+      {/* Header Navbar */}
+      <nav className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white text-xl font-bold">B</span>
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-gray-800">BIAS Grievance Portal</h2>
+                <p className="text-xs text-gray-500">Birla Institute of Applied Sciences</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-6">
+              <div className="text-right">
+                <p className="text-sm font-semibold text-gray-800">{user?.name}</p>
+                <p className="text-xs text-gray-500">{user?.role.toUpperCase()} {user?.department && `• ${user?.department}`}</p>
+              </div>
+              <button
+                onClick={logout}
+                className="px-5 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium transition-all hover:shadow-lg hover:scale-105"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-5 py-8">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl text-gray-800 mb-3">Welcome, {user?.name}! 👋</h1>
-          <p className="inline-block px-5 py-2 rounded-full font-semibold text-sm uppercase tracking-wider bg-gradient-to-r from-green-500 to-teal-400 text-white">
-            {user?.role.charAt(0).toUpperCase() + user?.role.slice(1)}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
-          <div className="bg-white p-6 rounded-xl shadow-md flex items-center gap-4 transition-all hover:-translate-y-1 hover:shadow-xl border-l-4 border-blue-500">
-            <div className="text-5xl">📝</div>
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Welcome Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 mb-8 text-white shadow-lg">
+          <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm text-gray-600 font-semibold mb-2">My Complaints</h3>
-              <p className="text-3xl font-bold text-gray-800">{stats.total}</p>
+              <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.name}! 👋</h1>
+              <p className="text-blue-100 text-lg">Manage and track your grievances efficiently</p>
             </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-xl shadow-md flex items-center gap-4 transition-all hover:-translate-y-1 hover:shadow-xl border-l-4 border-orange-500">
-            <div className="text-5xl">⏳</div>
-            <div>
-              <h3 className="text-sm text-gray-600 font-semibold mb-2">Pending</h3>
-              <p className="text-3xl font-bold text-gray-800">{stats.pending}</p>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-xl shadow-md flex items-center gap-4 transition-all hover:-translate-y-1 hover:shadow-xl border-l-4 border-purple-500">
-            <div className="text-5xl">⚙️</div>
-            <div>
-              <h3 className="text-sm text-gray-600 font-semibold mb-2">In Progress</h3>
-              <p className="text-3xl font-bold text-gray-800">{stats.inProgress}</p>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-xl shadow-md flex items-center gap-4 transition-all hover:-translate-y-1 hover:shadow-xl border-l-4 border-green-500">
-            <div className="text-5xl">✅</div>
-            <div>
-              <h3 className="text-sm text-gray-600 font-semibold mb-2">Resolved</h3>
-              <p className="text-3xl font-bold text-gray-800">{stats.resolved}</p>
+            <div className="hidden md:flex items-center gap-4">
+              <div className="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3">
+                <p className="text-xs text-blue-100 mb-1">Your Role</p>
+                <p className="text-lg font-bold">{user?.role.charAt(0).toUpperCase() + user?.role.slice(1)}</p>
+              </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3">
+                <p className="text-xs text-blue-100 mb-1">Department</p>
+                <p className="text-lg font-bold">{user?.department || 'N/A'}</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="text-center my-10">
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <span className="text-2xl">📝</span>
+              </div>
+              <div className="text-right">
+                <p className="text-3xl font-bold text-gray-800">{stats.total}</p>
+              </div>
+            </div>
+            <h3 className="text-sm font-medium text-gray-600">Total Complaints</h3>
+            <p className="text-xs text-gray-400 mt-1">All submissions</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                <span className="text-2xl">⏳</span>
+              </div>
+              <div className="text-right">
+                <p className="text-3xl font-bold text-orange-600">{stats.pending}</p>
+              </div>
+            </div>
+            <h3 className="text-sm font-medium text-gray-600">Pending Review</h3>
+            <p className="text-xs text-gray-400 mt-1">Awaiting response</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <span className="text-2xl">⚙️</span>
+              </div>
+              <div className="text-right">
+                <p className="text-3xl font-bold text-blue-600">{stats.inProgress}</p>
+              </div>
+            </div>
+            <h3 className="text-sm font-medium text-gray-600">In Progress</h3>
+            <p className="text-xs text-gray-400 mt-1">Being addressed</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                <span className="text-2xl">✅</span>
+              </div>
+              <div className="text-right">
+                <p className="text-3xl font-bold text-green-600">{stats.resolved}</p>
+              </div>
+            </div>
+            <h3 className="text-sm font-medium text-gray-600">Resolved</h3>
+            <p className="text-xs text-gray-400 mt-1">Successfully closed</p>
+          </div>
+        </div>
+
+        {/* Submit Complaint Button */}
+        <div className="text-center mb-8">
           <button 
             onClick={() => setShowComplaintForm(true)}
-            className="px-10 py-4 bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-lg text-lg font-semibold cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-purple-400/40"
+            className="px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-lg font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-105 inline-flex items-center gap-3"
           >
-            ➕ Submit New Complaint
+            <svg className="w-5 h-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+              <path d="M12 4v16m8-8H4"></path>
+            </svg>
+            Submit New Complaint
           </button>
         </div>
 
-        <div className="bg-white p-8 rounded-xl shadow-md mb-8">
-          <h2 className="text-2xl text-gray-800 mb-5">How to Submit a Complaint</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5">
-            <div className="bg-gray-50 p-5 rounded-lg border-l-4 border-purple-600">
-              <h3 className="text-lg mb-2 text-gray-800">🏫 Academic Issues</h3>
-              <p className="text-sm text-gray-600 mb-3">Course-related, exam issues, faculty concerns</p>
-              <span className="inline-block px-3 py-1 bg-purple-600 text-white rounded-xl text-xs font-semibold">Goes to HOD</span>
+        {/* Information Cards */}
+        <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Complaint Categories</h2>
+          <p className="text-gray-600 mb-6">Choose the appropriate category when submitting your complaint</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
+              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
+                <span className="text-2xl">🏫</span>
+              </div>
+              <h3 className="text-lg font-bold text-gray-800 mb-2">Academic Issues</h3>
+              <p className="text-sm text-gray-600 mb-4">Course-related, exam issues, faculty concerns</p>
+              <div className="flex items-center gap-2 text-xs text-blue-700">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd"></path>
+                </svg>
+                <span className="font-semibold">Assigned to HOD</span>
+              </div>
             </div>
-            <div className="bg-gray-50 p-5 rounded-lg border-l-4 border-purple-600">
-              <h3 className="text-lg mb-2 text-gray-800">🏠 Hostel Issues</h3>
-              <p className="text-sm text-gray-600 mb-3">Accommodation, facilities, mess complaints</p>
-              <span className="inline-block px-3 py-1 bg-purple-600 text-white rounded-xl text-xs font-semibold">Goes to Warden</span>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-200">
+              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mb-4">
+                <span className="text-2xl">🏠</span>
+              </div>
+              <h3 className="text-lg font-bold text-gray-800 mb-2">Hostel Issues</h3>
+              <p className="text-sm text-gray-600 mb-4">Accommodation, facilities, mess complaints</p>
+              <div className="flex items-center gap-2 text-xs text-purple-700">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd"></path>
+                </svg>
+                <span className="font-semibold">Assigned to Warden</span>
+              </div>
             </div>
-            <div className="bg-gray-50 p-5 rounded-lg border-l-4 border-purple-600">
-              <h3 className="text-lg mb-2 text-gray-800">🧰 Staff Issues</h3>
-              <p className="text-sm text-gray-600 mb-3">Teacher/Worker related concerns</p>
-              <span className="inline-block px-3 py-1 bg-purple-600 text-white rounded-xl text-xs font-semibold">Goes to Registrar</span>
+            <div className="bg-gradient-to-br from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
+              <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center mb-4">
+                <span className="text-2xl">🧰</span>
+              </div>
+              <h3 className="text-lg font-bold text-gray-800 mb-2">Staff Issues</h3>
+              <p className="text-sm text-gray-600 mb-4">Teacher/Worker related concerns</p>
+              <div className="flex items-center gap-2 text-xs text-indigo-700">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd"></path>
+                </svg>
+                <span className="font-semibold">Assigned to Registrar</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-8 rounded-xl shadow-md">
-          <h2 className="text-2xl text-gray-800 mb-6">My Complaints</h2>
+        {/* Complaints List */}
+        <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800">My Complaints</h2>
+              <p className="text-sm text-gray-500 mt-1">Track and manage all your submissions</p>
+            </div>
+            <div className="text-sm text-gray-500">
+              {complaints.length} {complaints.length === 1 ? 'complaint' : 'complaints'}
+            </div>
+          </div>
           
           {loading ? (
-            <div className="text-center py-16 text-gray-400">
-              <p className="text-lg">Loading your complaints...</p>
+            <div className="text-center py-20">
+              <div className="inline-block w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+              <p className="text-gray-500 mt-4">Loading your complaints...</p>
             </div>
           ) : complaints.length === 0 ? (
-            <div className="text-center py-16 text-gray-400">
-              <p className="text-lg mb-2">📭 You haven't submitted any complaints yet</p>
-              <p className="text-sm text-gray-300">
+            <div className="text-center py-20">
+              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-5xl">📭</span>
+              </div>
+              <p className="text-lg text-gray-800 font-semibold mb-2">No complaints yet</p>
+              <p className="text-sm text-gray-500 mb-6">
                 Click the button above to submit your first complaint
               </p>
             </div>
@@ -152,11 +240,19 @@ const LowLevelDashboard = () => {
               {complaints.map((complaint) => (
                 <div
                   key={complaint._id}
-                  className="border-2 border-gray-200 rounded-lg p-5 hover:shadow-md transition-all"
+                  className="bg-gray-50 border border-gray-200 rounded-xl p-6 hover:shadow-md hover:border-gray-300 transition-all"
                 >
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-lg font-bold text-gray-800 flex-1">{complaint.title}</h3>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ml-3 ${
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-gray-800 mb-1">{complaint.title}</h3>
+                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"></path>
+                        </svg>
+                        <span>{new Date(complaint.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                      </div>
+                    </div>
+                    <span className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${
                       complaint.status === "Pending" ? "bg-orange-100 text-orange-700" :
                       complaint.status === "In Progress" ? "bg-blue-100 text-blue-700" :
                       complaint.status === "Escalated" ? "bg-red-100 text-red-700" :
@@ -166,28 +262,36 @@ const LowLevelDashboard = () => {
                     </span>
                   </div>
                   
-                  <p className="text-gray-700 mb-3">{complaint.description}</p>
+                  <p className="text-gray-700 mb-4 leading-relaxed">{complaint.description}</p>
                   
-                  <div className="flex items-center justify-between text-xs text-gray-500">
-                    <div className="flex gap-3">
-                      <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded">
-                        {complaint.type === "academic" ? "🏫 Academic" : 
-                         complaint.type === "hostel" ? "🏠 Hostel" : 
-                         "🧰 Staff"}
+                  <div className="flex items-center gap-3 pt-3 border-t border-gray-200">
+                    <span className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${
+                      complaint.type === "academic" ? "bg-blue-100 text-blue-700" : 
+                      complaint.type === "hostel" ? "bg-purple-100 text-purple-700" : 
+                      "bg-indigo-100 text-indigo-700"
+                    }`}>
+                      {complaint.type === "academic" ? "🏫 Academic" : 
+                       complaint.type === "hostel" ? "🏠 Hostel" : 
+                       "🧰 Staff"}
+                    </span>
+                    {complaint.assignedTo && (
+                      <span className="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-lg text-xs font-medium">
+                        Assigned to: {complaint.assignedTo.role.toUpperCase()}
                       </span>
-                      {complaint.assignedTo && (
-                        <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded">
-                          Assigned to: {complaint.assignedTo.role.toUpperCase()}
-                        </span>
-                      )}
-                    </div>
-                    <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
+                    )}
                   </div>
                   
                   {complaint.response && (
-                    <div className="mt-3 p-3 bg-green-50 rounded border-l-4 border-green-500">
-                      <p className="text-xs font-semibold text-green-800 mb-1">Response:</p>
-                      <p className="text-sm text-green-700">{complaint.response}</p>
+                    <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                      <div className="flex items-start gap-2">
+                        <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path>
+                        </svg>
+                        <div className="flex-1">
+                          <p className="text-xs font-semibold text-green-800 mb-1">Official Response</p>
+                          <p className="text-sm text-green-700">{complaint.response}</p>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>

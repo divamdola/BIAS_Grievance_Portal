@@ -63,7 +63,7 @@ const Signup = ({ setShowSignup }) => {
             <img 
               src={assets.logo} 
               alt="College Logo" 
-              className="h-40 w-40 object-contain drop-shadow-xl"
+              className="h-56 w-56 object-contain drop-shadow-xl"
             />
           </div>
           <div className="space-y-4">

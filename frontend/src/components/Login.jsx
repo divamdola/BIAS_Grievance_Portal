@@ -38,7 +38,7 @@ const Login = ({ setShowSignup }) => {
             <img 
               src={assets.logo} 
               alt="College Logo" 
-              className="h-40 w-40 object-contain drop-shadow-xl"
+              className="h-56 w-56 object-contain drop-shadow-xl"
             />
           </div>
           <div className="space-y-4">
@@ -50,8 +50,11 @@ const Login = ({ setShowSignup }) => {
             </p>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full mt-4"></div>
           </div>
-          <div className="pt-8 space-y-4 max-w-md mx-auto">
-            <div className="flex items-center gap-4 text-left">
+
+          <div className="pt-8  space-y-4 max-w-md mx-auto">
+
+
+            <div className="flex  items-center gap-4 text-left">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-2xl">🎓</span>
               </div>
@@ -78,7 +81,10 @@ const Login = ({ setShowSignup }) => {
                 <p className="text-sm text-gray-600">Track your complaint status</p>
               </div>
             </div>
+
+
           </div>
+
         </div>
       </div>
 

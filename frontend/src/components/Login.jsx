@@ -32,9 +32,9 @@ const Login = ({ setShowSignup }) => {
   return (
     <div className="min-h-screen flex bg-white">
       {/* Left side - College Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-white min-h-screen items-center justify-center p-12 border-r border-gray-200">
-        <div className="text-center space-y-8">
-          <div className="flex justify-center mb-8">
+      <div className="hidden bg-gray-100 lg:flex lg:w-1/2  min-h-screen items-center justify-center p-12 border-r border-gray-200">
+        <div className="text-center bg-gray-100 space-y-8">
+          <div className="flex  justify-center mb-8">
             <img 
               src={assets.logo} 
               alt="College Logo" 
@@ -45,8 +45,8 @@ const Login = ({ setShowSignup }) => {
             <h1 className="text-4xl font-bold text-gray-800 leading-tight">
               Birla Institute of Applied Sciences
             </h1>
-            <p className="text-2xl text-gray-600 font-medium">
-              Bhimtal
+            <p className="text-xl text-gray-600 font-medium">
+              Online Grievance System
             </p>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full mt-4"></div>
           </div>
@@ -83,7 +83,7 @@ const Login = ({ setShowSignup }) => {
       </div>
 
       {/* Right side - Login form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-100">
         <div className="w-full max-w-md">
           {/* Mobile Logo and Header (visible only on mobile) */}
           <div className="text-center mb-8 lg:hidden">
@@ -98,19 +98,9 @@ const Login = ({ setShowSignup }) => {
               Birla Institute of Applied Sciences
             </h1>
             <p className="text-lg text-gray-600 font-medium">
-              Bhimtal
+              Online Grievance System
             </p>
             <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full mt-3"></div>
-          </div>
-
-          {/* BIAS Header for Desktop */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
-              BIAS
-            </h1>
-            <h2 className="text-lg text-gray-600 font-medium mb-1">
-              Online Grievance System
-            </h2>
           </div>
 
           {/* Login Form Card */}

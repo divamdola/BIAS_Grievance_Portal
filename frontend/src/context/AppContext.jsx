@@ -7,7 +7,9 @@ const AppContextProvider = (props) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [loading, setLoading] = useState(true);
-  const backendUrl = "https://bias-grievance-portal.onrender.com";
+  const backendUrl =
+    import.meta.env.VITE_API_URL ||
+    (import.meta.env.DEV ? "http://localhost:9000" : "https://bias-grievance-portal.onrender.com");
 
   // Set axios default authorization header
   useEffect(() => {

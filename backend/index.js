@@ -1,19 +1,38 @@
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import authRoutes from "./routes/authRoutes.js";
-import complaintRoutes from "./routes/complaintRoutes.js";
+require("dotenv").config();
+// Load environment variables FIRST before any other imports
 
-// Load environment variables
-dotenv.config();
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const authRoutes = require("./routes/authRoutes");
+const complaintRoutes = require("./routes/complaintRoutes");
 
 // App config
 const app = express();
 const port = process.env.PORT || 9000;
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+  "http://89.233.104.66:4173",
+  "https://bias-grievance-portal-1.onrender.com",
+  "http://localhost:5173"  // For local development
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -1,16 +1,46 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 export const AppContext = createContext();
+
+// Create axios instance with interceptors
+const api = axios.create({
+  baseURL:  "https://bias-grievance-portal.onrender.com"
+});
+
+// Add request interceptor to always include token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor to handle 401 errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token expired or invalid - logout user
+      localStorage.removeItem("token");
+      window.location.reload();
+    }
+    return Promise.reject(error);
+  }
+);
 
 const AppContextProvider = (props) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [loading, setLoading] = useState(true);
-  const backendUrl =
-    import.meta.env.VITE_API_URL ||
-    (import.meta.env.DEV ? "http://localhost:9000" : "https://bias-grievance-portal.onrender.com");
-
+  const backendUrl =  "https://grievance-system-u2c5.onrender.com";
   // Set axios default authorization header
   useEffect(() => {
     if (token) {
@@ -90,6 +120,7 @@ const AppContextProvider = (props) => {
     setUser(null);
     localStorage.removeItem("token");
     delete axios.defaults.headers.common["Authorization"];
+    toast.info("You have been logged out successfully. See you soon!");
   };
 
   const value = {
@@ -100,6 +131,7 @@ const AppContextProvider = (props) => {
     signup,
     logout,
     backendUrl,
+    api, // Export the axios instance with interceptors
   };
 
   return (
@@ -108,3 +140,4 @@ const AppContextProvider = (props) => {
 };
 
 export default AppContextProvider;
+export { api };

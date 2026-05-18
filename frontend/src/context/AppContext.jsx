@@ -6,7 +6,7 @@ export const AppContext = createContext();
 
 // Create axios instance with interceptors
 const api = axios.create({
-  baseURL: "https://grievance-system-u2c5.onrender.com/"
+  baseURL: "https://bias-grievance-portal.onrender.com"
 });
 
 // Add request interceptor to always include token

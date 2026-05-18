@@ -61,7 +61,7 @@ const ComplaintForm = ({ onClose, onSubmitSuccess }) => {
       const data = await response.json();
 
       if (data.success) {
-        toast.success("Complaint submitted successfully! (Note: Email notifications may take a few moments)");
+        toast.success("Complaint submitted successfully!");
         onSubmitSuccess && onSubmitSuccess(data.complaint);
         onClose();
       } else {

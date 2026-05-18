@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const complaintSchema = new mongoose.Schema({
   title: String,
@@ -12,7 +12,7 @@ const complaintSchema = new mongoose.Schema({
   assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   status: {
     type: String,
-    enum: ["Pending", "In Progress", "Resolved", "Escalated"],
+    enum: ["Pending","Accepted","Rejected", "In Progress", "Resolved", "Escalated", "Completed"],
     default: "Pending"
   },
   response: String,
@@ -20,4 +20,4 @@ const complaintSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-export default mongoose.model("Complaint", complaintSchema);
+module.exports = mongoose.model("Complaint", complaintSchema);

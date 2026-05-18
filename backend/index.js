@@ -1,4 +1,4 @@
-require("dotenv").config();
+import "dotenv/config";
 // Load environment variables FIRST before any other imports
 
 const express = require("express");

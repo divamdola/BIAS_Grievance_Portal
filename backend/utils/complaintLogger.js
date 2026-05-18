@@ -1,4 +1,4 @@
-const ComplaintLog = require("../models/complaintLog");
+import ComplaintLog from "../models/complaintLog.js";
 
 /**
  * Log complaint action to database
@@ -42,4 +42,4 @@ const logComplaintAction = async ({
   }
 };
 
-module.exports = { logComplaintAction };
+export { logComplaintAction };

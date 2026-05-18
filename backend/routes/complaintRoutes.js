@@ -1,5 +1,5 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   submitComplaint,
   getMyComplaints,
   getAssignedComplaints,
@@ -12,8 +12,8 @@ const {
   getAllLogs,
   getComplaintLogs,
   addOldComplaint,
-} = require("../controller/complaintController");
-const { authenticate, authorize } = require("../middleware/authMiddleware");
+} from "../controller/complaintController.js";
+import { authenticate, authorize } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -35,4 +35,4 @@ router.get("/:complaintId/logs", authenticate, getComplaintLogs);
 // Add old complaint manually (middle-level admins only)
 router.post("/add-old", authenticate, authorize("hod", "registrar", "chief_hostel_warden"), addOldComplaint);
 
-module.exports = router;
+export default router;

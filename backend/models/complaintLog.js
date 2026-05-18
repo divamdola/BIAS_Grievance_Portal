@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const complaintLogSchema = new mongoose.Schema({
   complaint: {
@@ -51,4 +51,4 @@ const complaintLogSchema = new mongoose.Schema({
 complaintLogSchema.index({ complaint: 1, timestamp: -1 });
 complaintLogSchema.index({ performedBy: 1 });
 
-module.exports = mongoose.model("ComplaintLog", complaintLogSchema);
+export default mongoose.model("ComplaintLog", complaintLogSchema);

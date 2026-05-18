@@ -1,8 +1,8 @@
-const Complaint = require("../models/complaint");
-const User = require("../models/user");
-const ComplaintLog = require("../models/complaintLog");
-const bcrypt = require("bcryptjs");
-const { logComplaintAction } = require("../utils/complaintLogger");
+import Complaint from "../models/complaint.js";
+import User from "../models/user.js";
+import ComplaintLog from "../models/complaintLog.js";
+import bcrypt from "bcryptjs";
+import { logComplaintAction } from "../utils/complaintLogger.js";
 
 // Submit a new complaint
 const submitComplaint = async (req, res) => {
@@ -737,7 +737,7 @@ const addOldComplaint = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   submitComplaint,
   getMyComplaints,
   getAssignedComplaints,

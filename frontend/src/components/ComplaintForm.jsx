@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { AppContext } from "../context/AppContext";
+import { toast } from 'react-toastify';
 
 const ComplaintForm = ({ onClose, onSubmitSuccess }) => {
   const { user, backendUrl } = useContext(AppContext);
@@ -7,48 +8,77 @@ const ComplaintForm = ({ onClose, onSubmitSuccess }) => {
     title: "",
     description: "",
     type: "academic",
+    department: ""
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+      ...(name === 'type' && { department: '' })
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
-
+    
     if (!formData.title || !formData.description) {
-      setError("Please fill in all fields");
-      setLoading(false);
+      setError("Please fill in all required fields");
       return;
+    }
+    
+    if (formData.type === 'academic' && !formData.department) {
+      setError("Please select a department for academic complaints");
+      return;
+    }
+    
+    setLoading(true);
+    
+    const complaintData = { ...formData };
+    if (complaintData.type !== 'academic') {
+      delete complaintData.department;
     }
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       const response = await fetch(`${backendUrl}/api/complaints/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(complaintData),
+        signal: controller.signal,
       });
 
+      clearTimeout(timeoutId);
       const data = await response.json();
 
       if (data.success) {
+        toast.success("Complaint submitted successfully! (Note: Email notifications may take a few moments)");
         onSubmitSuccess && onSubmitSuccess(data.complaint);
         onClose();
       } else {
-        setError(data.message || "Failed to submit complaint");
+        const errorMsg = data.message || "Failed to submit complaint";
+        setError(errorMsg);
+        toast.error(errorMsg);
       }
     } catch (err) {
-      setError("Error submitting complaint. Please try again.");
+      let errorMsg = "Error submitting complaint. Please try again.";
+      if (err.name === 'AbortError') {
+        errorMsg = "Request timed out. Your complaint may have been submitted. Please refresh the page.";
+      } else if (!navigator.onLine) {
+        errorMsg = "No internet connection. Please check your network.";
+      }
+      setError(errorMsg);
+      toast.error(errorMsg);
+      console.error("Submit error:", err);
     } finally {
       setLoading(false);
     }
@@ -89,10 +119,31 @@ const ComplaintForm = ({ onClose, onSubmitSuccess }) => {
               required
             >
               <option value="academic">🏫 Academic (Goes to HOD)</option>
-              <option value="hostel">🏠 Hostel (Goes to Warden)</option>
-              <option value="staff">🧰 Staff/Worker (Goes to Registrar)</option>
+              <option value="hostel">🏠 Hostel (Goes to Chief Hostel Warden)</option>
+              <option value="staff">🧰 Staff (Goes to Registrar)</option>
             </select>
           </div>
+
+          {formData.type === 'academic' && (
+            <div className="flex flex-col gap-2">
+              <label htmlFor="department" className="text-sm font-semibold text-gray-800">
+                Select Department <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="department"
+                name="department"
+                value={formData.department}
+                onChange={handleChange}
+                className="p-3 border-2 border-gray-200 rounded-lg text-base transition-all outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 cursor-pointer bg-white"
+                required={formData.type === 'academic'}
+              >
+                <option value="">-- Select Department --</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Electronic and Communication">Electronic and Communication</option>
+                <option value="MCA">MCA</option>
+              </select>
+            </div>
+          )}
 
           <div className="flex flex-col gap-2">
             <label htmlFor="title" className="text-sm font-semibold text-gray-800">

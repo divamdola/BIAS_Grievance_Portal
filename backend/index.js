@@ -15,29 +15,32 @@ const port = process.env.PORT || 9000;
 const allowedOrigins = [
   "http://89.233.104.66:4173",
   "https://bias-grievance-portal-1.onrender.com",
-  "http://localhost:5173"  // For local development
+  "http://localhost:5173"
 ];
 
 const corsOptions = {
-  origin(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, or Postman)
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
+    // Strip trailing slashes from incoming origin if any exist
+    const sanitizedOrigin = origin.replace(/\/$/, "");
 
-    const msg = "The CORS policy for this site does not allow access from the specified Origin.";
-    return callback(new Error(msg), false);
+    if (allowedOrigins.includes(sanitizedOrigin)) {
+      return callback(null, true);
+    } else {
+      console.log(`[CORS Blocked] Origin: ${origin} not found in allowed list.`);
+      return callback(new Error("Not allowed by CORS"), false);
+    }
   },
   credentials: true,
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-  optionsSuccessStatus: 204,
+  optionsSuccessStatus: 200, // Changed from 204 to 200 for broader browser compatibility
 };
 
 app.use(cors(corsOptions));
-app.options(/(.*)/, cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -43,7 +43,7 @@ const App = () => {
       
       case "hod":
       case "registrar":
-      case "warden":
+      case "chief_hostel_warden":
         return <MediumLevelDashboard />;
       
       case "student":

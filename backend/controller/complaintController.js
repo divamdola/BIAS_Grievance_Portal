@@ -232,7 +232,7 @@ const rejectComplaint = async (req, res) => {
     const { reason } = req.body;
 
     // Only medium-level users can reject
-    if (!["hod", "registrar", "warden"].includes(userRole)) {
+    if (!["hod", "registrar", "chief_hostel_warden"].includes(userRole)) {
       return res.status(403).json({
         success: false,
         message: "Only HOD, Registrar, or Warden can reject complaints",
@@ -307,7 +307,7 @@ const acceptComplaint = async (req, res) => {
     const userRole = req.userRole;
 
     // Only medium-level users can accept
-    if (!["hod", "registrar", "warden"].includes(userRole)) {
+    if (!["hod", "registrar", "chief_hostel_warden"].includes(userRole)) {
       return res.status(403).json({
         success: false,
         message: "Only HOD, Registrar, or Warden can accept complaints",
@@ -382,7 +382,7 @@ const resolveComplaint = async (req, res) => {
     const { response } = req.body;
 
     // Only medium-level users and director can resolve
-    if (!["hod", "registrar", "warden", "director"].includes(userRole)) {
+    if (!["hod", "registrar", "chief_hostel_warden", "director"].includes(userRole)) {
       return res.status(403).json({
         success: false,
         message: "Only HOD, Registrar, Warden or Director can resolve complaints",
@@ -461,7 +461,7 @@ const escalateComplaint = async (req, res) => {
     const userRole = req.userRole;
 
     // Only medium-level users can escalate
-    if (!["hod", "registrar", "warden"].includes(userRole)) {
+    if (!["hod", "registrar", "chief_hostel_warden"].includes(userRole)) {
       return res.status(403).json({
         success: false,
         message: "Only HOD, Registrar, or Warden can escalate complaints",

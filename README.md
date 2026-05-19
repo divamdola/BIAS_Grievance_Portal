@@ -25,8 +25,8 @@ A comprehensive role-based grievance management system for colleges with three-t
   - Password: admin123
   - Handles: Teacher/Worker complaints
 
-- **Hostel Warden**
-  - Email: warden@college.edu
+- **Hostel chief_hostel_warden**
+  - Email: chief_hostel_warden@college.edu
   - Password: admin123
   - Handles: Hostel complaints
 
@@ -107,7 +107,7 @@ Frontend will run on: http://localhost:5173
    - Students/Teachers/Workers submit complaints
    - Complaints auto-route based on type:
      - Academic → HOD
-     - Hostel → Warden
+     - Hostel → chief_hostel_warden
      - Staff → Registrar
    - Medium-level users can escalate to Director if needed
 
